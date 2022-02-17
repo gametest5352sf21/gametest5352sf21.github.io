@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+img {margin-top:-5px;}
+#gameV2temp {position:absolute;top:500px;}
+#gameV2 {position:absolute;top:500px;}
+</style>
+</head>
+<body>
+<div style="font-family:Courier;font-weight:bold;" id="game">.......................................................................................................#.......................................................................................................#.......................................................................................................#R..............................................................................................e.......#iiiiiiiiiiiii........e..................................................................iiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiii............................e.............................iiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiii................iiiiiiiiiiiii..........e......iiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#</div>
+<input id="x" type="number" disabled value="0">
+<input id="y" type="number" disabled value="1">
+<div id="gameV" style="font-family:Courier;font-weight:bold;"></div>
+<button onclick='moveRight();moveDown();moveDown();moveDown();'>></button>
+<button onclick='moveLeft();moveDown();moveDown();moveDown();'><</button>
+<button onclick='moveUp();moveRight();moveRight();moveRight();moveDown();moveDown();moveDown();'>^></button>
+<button onclick='moveUp();moveLeft();moveLeft();moveLeft();moveDown();moveDown();moveDown();'><^</button>
+<input id="move">
+<textarea style="font-family:Courier"></textarea>
+<div id="gameV2temp" style="font-family:Courier;font-weight:bold;"></div>
+<div id="gameV2" style="font-family:Courier;font-weight:bold;"></div>
+<input id="control" oninput="player(this)"><input id="controlCounter">
+
+</textarea>
+<script>
+/*
+.......................................................................................................#
+.......................................................................................................#
+.......................................................................................................#
+R..............................................................................................e.......#
+iiiiiiiiiiiii........e..................................................................iiiiiiiiiiiiiii#
+iiiiiiiiiiiiiiiiiiiiiii............................e.............................iiiiiiiiiiiiiiiiiiiiii#
+iiiiiiiiiiiiiiiiiiiiiiiiiiii................iiiiiiiiiiiii..........e......iiiiiiiiiiiiiiiiiiiiiiiiiiiii#
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#
+iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#
+
+*/
+
+function player(inp) {
+var c = document.getElementById("controlCounter")
+c.value = Number(c.value) + 1
+if(c.value == 20) {
+c.value = 0
+if(inp.value == "d") {
+moveRight();moveDown();moveDown();moveDown();
+}
+}
+inp.value = ""
+}
+
+function fight(x,y) {
+localStorage.randomMove = Math.floor(Math.random()*100)
+document.getElementById("move").value = ""
+document.getElementById("move").placeholder = localStorage.randomMove
+localStorage.fightX = x
+localStorage.fightY = y
+setTimeout(fightResult,3000)
+}
+
+function fightResult() {
+if(document.getElementById("move").value == localStorage.randomMove) {
+setBlock(localStorage.fightX,localStorage.fightY,".")
+}
+else {
+alert("imagine dying.")
+}
+}
+
+function moveRight() {
+move(Number(document.getElementById("y").value),Number(document.getElementById("x").value)+1,Number(document.getElementById("y").value))
+}
+
+function moveLeft() {
+move(Number(document.getElementById("y").value),Number(document.getElementById("x").value)-1,Number(document.getElementById("y").value))
+}
+
+
+function moveDown() {
+move(Number(document.getElementById("y").value),Number(document.getElementById("x").value),Number(document.getElementById("y").value)+1)
+}
+
+function moveUp() {
+move(Number(document.getElementById("y").value),Number(document.getElementById("x").value),Number(document.getElementById("y").value)-1)
+}
+
+function move(py,x,y) {
+var i = 0
+var g = document.getElementById("game").innerHTML.split("#")
+if(checkPosition(g,x,y,".") == true) {
+g[py] = g[py].replace("R",".")
+var level = g[y].split("")
+level[x] = "R"
+var newlevel = ""
+while(i < level.length) {
+newlevel += level[i]
+i += 1
+}
+g[y] = newlevel
+document.getElementById("x").value = x
+document.getElementById("y").value = y
+}
+if (checkPosition(g,x+1,y,"e") == true) {
+fight(x+1,y)
+}
+i = 0
+document.getElementById("game").innerHTML = ""
+while(i < g.length - 1) {
+document.getElementById("game").innerHTML += g[i] + "#"
+i += 1
+}
+document.getElementById("game").innerHTML += g[g.length-1]
+gameV()
+chunk(x,x+5)
+setTimeout(laterChunk1,200)
+setTimeout(laterChunk2,400)
+setTimeout(laterTempChunk,1000)
+}
+
+function laterChunk1() {
+chunk(Number(document.getElementById("x").value),Number(document.getElementById("x").value)+8)
+}
+
+function laterChunk2() {
+chunk(Number(document.getElementById("x").value),Number(document.getElementById("x").value)+12)
+}
+
+function laterTempChunk() {
+tempChunk(Number(document.getElementById("x").value),Number(document.getElementById("x").value)+20)
+}
+
+function checkPosition(base,x,y,o) {
+if(base[y][x] == o) {
+return(true)
+}
+else {
+return(false)
+}
+}
+
+function gameV() {
+var g = document.getElementById("game").innerHTML.split("#")
+document.getElementById("gameV").innerHTML = g[0]
+var i = 1
+while(i < g.length -1) {
+document.getElementById("gameV").innerHTML += "<br>" + g[i]
+i += 1
+}
+}
+
+function setBlock(x,y,b) {
+var i = 0
+var g = document.getElementById("game").innerHTML.split("#")
+var level = g[y].split("")
+var newlevel = ""	
+level[x] = b
+while(i < level.length) {
+newlevel += level[i]
+i += 1
+}
+g[y] = newlevel
+i = 0
+document.getElementById("game").innerHTML = ""
+while(i < g.length - 1) {
+document.getElementById("game").innerHTML += g[i] + "#"
+i += 1
+}
+document.getElementById("game").innerHTML += g[g.length-1]
+gameV()
+}
+
+function chunk(chunkStart,chunkEnd) {
+var ues = document.getElementById("gameV2")
+ues.innerHTML = ""
+var game = document.getElementById("game").innerHTML.split("#")
+var gameLength = game[0].length
+var i = chunkStart
+var i0 = 0
+while(i0 < game.length) {
+i = chunkStart
+while(i < chunkEnd) {
+if(game[i0][i] == "i") {
+ues.innerHTML += "<img src='gameblocktest2.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == ".") {
+ues.innerHTML += "<img src='gameskytest1.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == "R") {
+ues.innerHTML += "<img src='gameplayertest2.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == "e") {
+ues.innerHTML += "<img src='gameplayertest2.png' style='width:60px;height:60px;'>"
+}
+else {
+ues.innerHTML += "<br>"
+}
+i += 1
+}
+ues.innerHTML += "<br>"
+i0 += 1
+}
+}
+
+function tempChunk(chunkStart,chunkEnd) {
+var ues = document.getElementById("gameV2temp")
+ues.innerHTML = ""
+var game = document.getElementById("game").innerHTML.split("#")
+var gameLength = game[0].length
+var i = chunkStart
+var i0 = 0
+while(i0 < game.length) {
+i = chunkStart
+while(i < chunkEnd) {
+if(game[i0][i] == "i") {
+ues.innerHTML += "<img src='gameblocktest2.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == ".") {
+ues.innerHTML += "<img src='gameskytest1.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == "R") {
+ues.innerHTML += "<img src='gameplayertest2.png' style='width:60px;height:60px;'>"
+}
+else if(game[i0][i] == "e") {
+ues.innerHTML += "<img src='gameplayertest2.png' style='width:60px;height:60px;'>"
+}
+else {
+ues.innerHTML += "<br>"
+}
+i += 1
+}
+ues.innerHTML += "<br>"
+i0 += 1
+}
+}
+
+
+
+// R = Player
+// i = Block
+// . = Empty
+// e = Enemy 1
+// # = New level
+
+// Use an image for each "block"
+//Use different encodings for different enemies
+//Use a monospace font - Courier
+//Use textarea with Courier to develop the game
+gameV()
+</script>
+
+</body>
+</html>
