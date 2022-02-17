@@ -8,9 +8,9 @@ img {margin-top:-5px;}
 </style>
 </head>
 <body>
-<div style="font-family:Courier;font-weight:bold;" id="game">.......................................................................................................#.......................................................................................................#.......................................................................................................#R..............................................................................................e.......#iiiiiiiiiiiii........e..................................................................iiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiii............................e.............................iiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiii................iiiiiiiiiiiii..........e......iiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#</div>
-<input id="x" type="number" disabled value="0">
-<input id="y" type="number" disabled value="1">
+<div style="font-family:Courier;font-weight:bold;" id="game">.......................................................................................................#.......................................................................................................#.......................................................................................................#.R.............................................................................................e.......#iiiiiiiiiiiii........e..................................................................iiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiii............................e.............................iiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiii................iiiiiiiiiiiii..........e......iiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#</div>
+<input id="x" type="number" disabled value="1">
+<input id="y" type="number" disabled value="3">
 <div id="gameV" style="font-family:Courier;font-weight:bold;"></div>
 <button onclick='moveRight();moveDown();moveDown();moveDown();'>></button>
 <button onclick='moveLeft();moveDown();moveDown();moveDown();'><</button>
@@ -36,6 +36,8 @@ iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii#
 
 */
+
+tempChunk(0,20)
 
 function player(inp) {
 var c = document.getElementById("controlCounter")
